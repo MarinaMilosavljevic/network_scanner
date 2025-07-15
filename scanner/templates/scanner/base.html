@@ -1,0 +1,193 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Scanner{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <style>
+  /* Flexbox za sticky footer */
+  html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  body > .container {
+    flex: 1;
+  }
+
+  /* Osnovni stil za ceo container */
+  .row.justify-content-center {
+    margin-top: 6rem;
+  }
+
+  /* Kontejner forme */
+  .col-md-5 {
+    background: #fff;
+    padding: 2.5rem 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .col-md-5:hover {
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  }
+
+  /* Naslov */
+  h2.mb-4 {
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: #222;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  /* Alert poruka */
+  .alert-danger {
+    background-color: #ffdddd;
+    border: 1px solid #ff5c5c;
+    color: #a30000;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 6px rgba(255, 92, 92, 0.3);
+  }
+
+  /* Labela */
+  label.form-label {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 1rem;
+  }
+
+  /* Input polja */
+  input.form-control {
+    border-radius: 10px;
+    border: 1.5px solid #ccc;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  input.form-control:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 8px rgba(74, 144, 226, 0.5);
+    outline: none;
+  }
+
+  /* Dugme */
+  button.btn-primary {
+    background: linear-gradient(45deg, #4a90e2, #357ABD);
+    border: none;
+    border-radius: 12px;
+    padding: 0.85rem 1.5rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: background 0.4s ease, transform 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(53, 122, 189, 0.4);
+  }
+
+  button.btn-primary:hover {
+    background: linear-gradient(45deg, #357ABD, #2a5a9f);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(53, 122, 189, 0.6);
+  }
+
+  /* Link u dnu */
+  p.mt-3.text-center {
+    font-size: 0.95rem;
+    color: #666;
+  }
+
+  p.mt-3.text-center a {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+
+  p.mt-3.text-center a:hover {
+    color: #357ABD;
+    text-decoration: underline;
+  }
+
+    /* Footer stil */
+    footer {
+    background-color: #494b5f;
+    padding: 1rem 0;
+    text-align: center;
+    border-top: 1px solid #ddd;
+    color: white; /* BELE SLOVA */
+    }
+
+
+  /* Tamno sivi header */
+  nav.navbar {
+    background-color: #484a5c !important;
+  }
+
+  /* Beli tekst i linkovi u navbaru */
+  nav.navbar .navbar-brand,
+  nav.navbar .nav-link {
+    color: #fff !important;
+  }
+
+  nav.navbar .nav-link:hover {
+    color: #adb5bd !important; /* svetlija siva na hover */
+  }
+
+  </style>
+  
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light mb-4">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'scan_form' %}">
+      <img src="{% static 'scanner/logo.png' %}" alt="Logo" width="40" height="40" class="d-inline-block align-text-top me-2">
+      Scanner
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        {% if user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'scan_form' %}">New Scan</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'scan_history' %}">History</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  {% block content %}
+  {% endblock %}
+</div>
+
+<footer>
+  <div class="container">
+    <p>© {% now "Y" %} Scanner. All rights reserved.</p>
+    <p>Made with ❤️ by Marina </p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

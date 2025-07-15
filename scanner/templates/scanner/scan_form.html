@@ -1,0 +1,29 @@
+{% extends 'scanner/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}New Scan{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <h2 class="mb-4">New Scan</h2>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="mb-3">
+        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+        {{ field|add_class:"form-control" }}
+        {% if field.help_text %}
+          <div class="form-text">{{ field.help_text }}</div>
+        {% endif %}
+        {% for error in field.errors %}
+          <div class="text-danger small mt-1">{{ error }}</div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary w-100">Start Scan</button>
+    </form>
+    <a href="{% url 'scan_history' %}" class="btn btn-secondary w-100 mt-3">History</a>
+  </div>
+</div>
+{% endblock %}
